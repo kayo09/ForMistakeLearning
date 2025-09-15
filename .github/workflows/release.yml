@@ -1,0 +1,156 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+
+    - name: Get version from tag
+      id: get_version
+      run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: CVE Explorer Pro v${{ steps.get_version.outputs.version }}
+        body: |
+          ## CVE Explorer Pro v${{ steps.get_version.outputs.version }}
+          
+          ### Changes
+          See [CHANGELOG.md](https://github.com/kayo09/ForMistakeLearning/blob/main/CHANGELOG.md) for detailed changes.
+          
+          ### Installation
+          
+          **Cargo:**
+          ```bash
+          cargo install cve_explorer_pro
+          ```
+          
+          **Library:**
+          ```toml
+          [dependencies]
+          cve_explorer_pro = "${{ steps.get_version.outputs.version }}"
+          ```
+          
+          ### Links
+          - 📦 [crates.io](https://crates.io/crates/cve_explorer_pro)
+          - 📚 [Documentation](https://docs.rs/cve_explorer_pro)
+          - 🔍 [Repository](https://github.com/kayo09/ForMistakeLearning)
+        draft: false
+        prerelease: false
+
+  publish-crate:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ubuntu-latest-cargo-release-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Verify version matches tag
+      run: |
+        CARGO_VERSION=$(grep '^version' Cargo.toml | head -1 | sed 's/version = "\(.*\)"/\1/')
+        TAG_VERSION="${{ needs.create-release.outputs.version }}"
+        if [ "$CARGO_VERSION" != "$TAG_VERSION" ]; then
+          echo "Version mismatch: Cargo.toml has $CARGO_VERSION but tag is $TAG_VERSION"
+          exit 1
+        fi
+
+    - name: Run tests before publishing
+      run: cargo test --all-features
+
+    - name: Build before publishing
+      run: cargo build --release --all-features
+
+    - name: Publish to crates.io
+      run: cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  build-binaries:
+    name: Build binaries
+    runs-on: ${{ matrix.os }}
+    needs: create-release
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            name: cve_explorer_pro-linux-x86_64
+          - os: windows-latest  
+            target: x86_64-pc-windows-msvc
+            name: cve_explorer_pro-windows-x86_64.exe
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            name: cve_explorer_pro-macos-x86_64
+
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: ${{ matrix.target }}
+
+    - name: Cache cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-release-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Build binary
+      run: cargo build --release --target ${{ matrix.target }}
+
+    - name: Prepare binary (Unix)
+      if: matrix.os != 'windows-latest'
+      run: |
+        cp target/${{ matrix.target }}/release/cve_explorer_pro ${{ matrix.name }}
+        strip ${{ matrix.name }}
+
+    - name: Prepare binary (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        copy target\${{ matrix.target }}\release\cve_explorer_pro.exe ${{ matrix.name }}
+
+    - name: Upload binary to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ${{ matrix.name }}
+        asset_name: ${{ matrix.name }}
+        asset_content_type: application/octet-stream

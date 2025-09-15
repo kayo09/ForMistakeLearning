@@ -19,6 +19,19 @@ exclude = [
     "*.log"
 ]
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[[bin]]
+name = "cve_explorer_pro"
+path = "src/main.rs"
+required-features = []
+
+[features]
+default = []
+full = [] # For comprehensive analysis mode
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
