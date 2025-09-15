@@ -13,7 +13,6 @@ keywords = ["cve", "security", "vulnerability", "analysis", "cybersecurity"]
 categories = ["api-bindings", "development-tools"]
 exclude = [
     "tests/*",
-    "examples/*",
     ".github/*",
     "target/*",
     "*.log"
