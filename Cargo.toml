@@ -1,0 +1,31 @@
+[package]
+name = "cve_explorer_pro"
+version = "0.1.0"
+edition = "2021"
+authors = ["Krutarth Parmar <thisiskay@kayparmar.com>"]
+description = "A comprehensive CVE vulnerability analysis library with deep exploitation path exploration and root cause analysis"
+license = "MIT"
+repository = "https://github.com/kayo09/ForMistakeLearning"
+homepage = "https://github.com/kayo09/ForMistakeLearning"
+documentation = "https://docs.rs/cve_explorer_pro"
+readme = "README.md"
+keywords = ["cve", "security", "vulnerability", "analysis", "cybersecurity"]
+categories = ["api-bindings", "development-tools"]
+exclude = [
+    "tests/*",
+    "examples/*",
+    ".github/*",
+    "target/*",
+    "*.log"
+]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1.0", features = ["full"] }
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = "1.0"
+thiserror = "1.0"
+clap = { version = "4.0", features = ["derive"] }
+
