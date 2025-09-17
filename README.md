@@ -4,7 +4,7 @@
 
 [![Crates.io](https://img.shields.io/crates/v/cve_explorer_pro.svg)](https://crates.io/crates/cve_explorer_pro)
 [![Documentation](https://docs.rs/cve_explorer_pro/badge.svg)](https://docs.rs/cve_explorer_pro)
-[![Build Status](https://github.com/kayo09/cve_explorer_pro/workflows/CI/badge.svg)](https://github.com/kayo09/ForMistakeLearning/actions)
+[![Build Status](https://github.com/kayo09/ForMistakeLearning/workflows/CI/badge.svg)](https://github.com/kayo09/ForMistakeLearning/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🚀 Features
