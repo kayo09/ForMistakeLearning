@@ -1,6 +1,6 @@
 [package]
 name = "cve_explorer_pro"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Krutarth Parmar <thisiskay@kayparmar.com>"]
 description = "A comprehensive CVE vulnerability analysis library with deep exploitation path exploration and root cause analysis"
