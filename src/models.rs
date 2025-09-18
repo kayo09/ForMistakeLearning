@@ -66,7 +66,7 @@ pub struct Exploitability {
     pub exploitation_steps: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum ExploitComplexity {
     Low,
     High,
@@ -79,7 +79,7 @@ pub enum PrivilegesRequired {
     High,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum AttackVector {
     Network,
     Adjacent,
@@ -133,43 +133,4 @@ pub enum DifficultyLevel {
     Hard,
     Expert,
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
