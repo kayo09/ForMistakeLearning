@@ -1,4 +1,4 @@
-# CVE Explorer Pro
+# CVE Explorer Pro v0.1.1
 
 🔍 **A comprehensive Rust library for deep CVE vulnerability analysis and exploitation path exploration**
 
@@ -6,6 +6,13 @@
 [![Documentation](https://docs.rs/cve_explorer_pro/badge.svg)](https://docs.rs/cve_explorer_pro)
 [![Build Status](https://github.com/kayo09/ForMistakeLearning/workflows/CI/badge.svg)](https://github.com/kayo09/ForMistakeLearning/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## 🆕 What's New in v0.1.1
+
+- **🧹 Code Quality**: Removed mock-up code for improved reliability and performance
+- **🛡️ Enhanced Stability**: Better error handling and edge case management
+- **📚 Comprehensive Documentation**: Complete API documentation and user guides
+- **⚡ Performance**: Optimized analysis algorithms for faster processing
 
 ## 🚀 Features
 
@@ -22,7 +29,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-cve_explorer_pro = "0.1.0"
+cve_explorer_pro = "0.1.1"
 ```
 
 Or install the CLI tool:
@@ -166,6 +173,23 @@ Get your free NVD API key from [NIST](https://nvd.nist.gov/developers/request-an
 export NVD_API_KEY="your-api-key-here"
 cve_explorer_pro -c CVE-2021-34527 --api-key $NVD_API_KEY
 ```
+
+## 📚 Documentation
+
+### Complete Documentation Package
+
+- **📖 [User Guide](docs/USER_GUIDE.md)**: Comprehensive tutorials and examples
+- **🔍 [API Documentation](https://docs.rs/cve_explorer_pro)**: Complete API reference on docs.rs
+- **📋 [Examples](examples/)**: Practical usage examples for different scenarios
+- **📝 [Changelog](CHANGELOG.md)**: Version history and release notes
+- **🚀 [Publishing Guide](PUBLISHING.md)**: Development and release procedures
+
+### Quick Links
+
+- **Getting Started**: See [User Guide - Getting Started](docs/USER_GUIDE.md#getting-started)
+- **Library Usage**: Check [User Guide - Advanced Features](docs/USER_GUIDE.md#advanced-features)
+- **CLI Reference**: View [User Guide - Basic Usage](docs/USER_GUIDE.md#basic-usage)
+- **Troubleshooting**: Visit [User Guide - Troubleshooting](docs/USER_GUIDE.md#troubleshooting)
 
 ## 🤝 Contributing
 
